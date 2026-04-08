@@ -41,20 +41,3 @@
 | No `test.fail()` on promo tests | Let failures reveal real bugs instead of pre-annotating |
 | `test.fail()` only on BUG-001 | CTA is confirmed not a link from HTML inspection |
 | `generateValidPromoCode()` helper | Demonstrates understanding of the check-digit algorithm |
-
-## Interview Talking Points
-
-- Why I organized tests by user story instead of by page
-- How I derived boundary conditions from the acceptance criteria
-- The difference between confirmed bugs, potential bugs, and open questions
-- How I would extend this into a maintainable regression suite with CI
-- What additional checks I would add with API or database access
-- Why I removed `test.fail()` from promo tests and what it reveals
-
-## Open Questions for the Stakeholder
-
-1. What are the exact seat-availability rules? (always available? random? capacity-based?)
-2. Should promo-code validation be case-sensitive?
-3. What is the expected behavior when both search fields are left as "Select…"?
-4. Should a promo code with a 0% discount digit be accepted or rejected?
-5. Is the "Back" link on the results page intentional, or should the CTA be the primary home path?
