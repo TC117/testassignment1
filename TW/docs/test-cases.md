@@ -1,34 +1,63 @@
 # MarsAir Test Cases
 
-## Automated Coverage
+## Automated Test Coverage
 
-| ID | Story | Scenario | Type | Expected Result |
-| --- | --- | --- | --- | --- |
-| MA-AUTO-001 | #1 | Load home page | Automated | Departure, return, promo code, search button, and key links are visible |
-| MA-AUTO-002 | #1 | Verify search month options | Automated | Both dropdowns show July/December options across current year, next year, and two years from now |
-| MA-AUTO-003 | #1 | Submit valid search combinations | Automated | Each valid search shows a seat availability result message |
-| MA-AUTO-004 | #4 | Search with return less than one year after departure | Automated | Invalid schedule message is shown |
-| MA-AUTO-005 | #2 | Submit valid promotional code | Automated | Correct discount message is shown |
-| MA-AUTO-006 | #2 | Submit invalid promotional code | Automated | Invalid code message is shown and echoes the entered code |
-| MA-AUTO-007 | #3 | Click MarsAir logo from results page | Automated | User returns to the home page |
-| MA-AUTO-008 | #3 | Click prominent CTA from results page | Automated, expected failure | User should return to the home page |
+All IDs below match the test-name prefixes in `marsair.spec.js`.
+
+### Story #1 – Basic Search flow
+
+| ID | Scenario | Type | Expected Result |
+| --- | --- | --- | --- |
+| MA-001 | Home page loads with form fields and links | Automated | Departure, return, promo code, search button, and key links are visible |
+| MA-002 | Dropdowns match the two-year six-month schedule | Automated | Both selects show `Select…` + July/Dec × 3 years |
+| MA-003 | Valid search combinations (×10 data-driven) | Automated | Each search shows "Seats available!" or "Sorry, no more seats" |
+| MA-004 | Search with default "Select…" values | Automated | No server error or crash |
+
+### Story #4 – Invalid Return Dates
+
+| ID | Scenario | Type | Expected Result |
+| --- | --- | --- | --- |
+| MA-005 | Return < 1 year from departure (×5 pairs) | Automated | "Unfortunately, this schedule is not possible. Please try again." |
+| MA-006 | Same departure and return date (×2 pairs) | Automated | Same invalid-schedule message |
+| MA-007 | Return before departure (×3 pairs) | Automated | Same invalid-schedule message |
+
+### Story #2 – Promotional Codes
+
+| ID | Scenario | Type | Expected Result |
+| --- | --- | --- | --- |
+| MA-008 | Valid promo code (×2 from story examples) | Automated | "Promotional code [code] used: [N]% discount!" |
+| MA-009 | Invalid promo code (×3 variants) | Automated | "Sorry, code [code] is not valid" |
+| MA-010 | Edge-case promo input (×6 variants) | Automated | Empty/whitespace → ignored; others → rejected |
+
+### Story #3 – Link to Home Page
+
+| ID | Scenario | Type | Expected Result |
+| --- | --- | --- | --- |
+| MA-011 | MarsAir logo returns to home from results | Automated | URL matches `/BuiKienTin` and home page heading visible |
+| MA-012 | CTA text is visible on results page | Automated | "Book a ticket to the red planet now!" text is present |
+| MA-013 | CTA navigates back to home (expected fail – BUG-001) | Automated | Should navigate but CTA is not a link |
+
+---
 
 ## Additional Manual Scenarios
 
 | ID | Story | Scenario | Priority | Expected Result |
 | --- | --- | --- | --- | --- |
-| MA-MAN-001 | #1 | Search with only departing selected | High | Validation or a meaningful result should be shown without server error |
-| MA-MAN-002 | #1 | Search with only returning selected | High | Validation or a meaningful result should be shown without server error |
-| MA-MAN-003 | #1 | Search with both fields left as Select | High | User should not see a crash or broken flow |
-| MA-MAN-004 | #2 | Submit lowercase promo code | Medium | Behavior should be defined and handled consistently |
-| MA-MAN-005 | #2 | Submit promo code with leading or trailing spaces | Medium | Input should be trimmed or rejected consistently |
-| MA-MAN-006 | #3 | Use browser back and then logo/CTA navigation | Medium | User can reliably return to home from results |
-| MA-MAN-007 | #4 | Boundary case: return exactly one year after departure | High | This should be treated as a valid schedule |
-| MA-MAN-008 | General | Open Report an issue flow and submit a clear defect | High | Bug tracker accepts issue details successfully |
+| MA-MAN-001 | #1 | Search with only departing selected | High | Validation or meaningful result without server error |
+| MA-MAN-002 | #1 | Search with only returning selected | High | Same as above |
+| MA-MAN-003 | #2 | Case sensitivity of promo codes | Medium | Behavior should be consistent (accept or reject, not crash) |
+| MA-MAN-004 | #2 | Promo code with 0% discount digit (e.g. XX0-YYY-000) | Medium | Defined behavior – 0% discount or rejection |
+| MA-MAN-005 | #3 | Logo and CTA navigation from the "Report an issue" page | Medium | Both should return to home from every page |
+| MA-MAN-006 | #3 | Browser back button after navigation | Low | Consistent navigation history |
+| MA-MAN-007 | General | Submit a defect via the embedded issue tracker | High | Issue accepted without errors |
+| MA-MAN-008 | General | Visual consistency across Chrome, Firefox, Edge | Low | No major layout breaks |
+
+---
 
 ## Suggested Execution Order
 
-1. Smoke the home page and search form.
-2. Run invalid schedule and promo code checks.
-3. Run the navigation checks.
-4. Explore edge cases and document any new bugs found.
+1. **Smoke**: Run MA-001, MA-002 to verify home page.
+2. **Core flows**: Run MA-003 (valid searches) and MA-005 (invalid schedules).
+3. **Business rules**: Run MA-006, MA-007 (schedule edge cases) and MA-008–MA-010 (promo codes).
+4. **Navigation**: Run MA-011–MA-013.
+5. **Explore**: Execute manual scenarios and log any new bugs.

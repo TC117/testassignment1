@@ -8,6 +8,7 @@ class SearchResultsPage {
     this.logoLink = page.getByRole('link', { name: 'MarsAir' });
     this.backLink = page.getByRole('link', { name: 'Back' });
     this.prominentCtaLink = page.getByRole('link', { name: 'Book a ticket to the red planet now!' });
+    this.prominentCtaText = page.getByText('Book a ticket to the red planet now!');
     this.availabilityMessages = [
       'Seats available! Call 0800 MARSAIR to book!',
       'Sorry, there are no more seats available.',
@@ -52,6 +53,10 @@ class SearchResultsPage {
 
   async clickLogo() {
     await this.logoLink.click();
+  }
+
+  async expectCtaTextVisible() {
+    await expect(this.prominentCtaText).toBeVisible();
   }
 
   async clickProminentCta() {

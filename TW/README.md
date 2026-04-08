@@ -4,33 +4,47 @@ This folder contains a self-contained QA submission pack for the MarsAir Thought
 
 ## Contents
 
-- `automation/`: Playwright UI tests against the live MarsAir site
-- `automation/pages/`: page objects for the home page and search results page
-- `automation/fixtures/`: custom Playwright fixtures that provide MarsAir page objects to tests
-- `automation/data/`: shared test data used by the specs
-- `docs/test-approach.md`: concise testing strategy and scope
-- `docs/test-cases.md`: story-mapped manual and automated scenarios
-- `docs/bug-log.md`: local backup of issues found during testing
-- `docs/notes.md`: interview notes, assumptions, and open questions
+- `automation/` – Playwright UI tests against the live MarsAir site
+  - `pages/` – Page objects (HomePage, SearchResultsPage)
+  - `fixtures/` – Custom Playwright fixtures providing page objects to tests
+  - `data/` – Shared test data and helpers (promo-code generator)
+  - `tests/` – Test specs organized by user story
+- `docs/test-approach.md` – Testing strategy, techniques, and coverage summary
+- `docs/test-cases.md` – Story-mapped automated and manual scenarios
+- `docs/bug-log.md` – Local backup of issues found during testing
+- `docs/notes.md` – Acceptance-criteria analysis, design decisions, and interview notes
 
-## Run The Tests
+## Run the Tests
 
-From [`TW/automation`](/C:/Users/tinvt/OneDrive/Documents/GitHub/testassignment1/TW/automation):
+From `TW/automation`:
 
 ```powershell
 npm install
+npx playwright install chromium
 npm test
 ```
 
 Useful commands:
 
 ```powershell
-npm run test:headed
-npm run test:report
+npm run test:headed     # run with visible browser
+npm run test:report     # open the HTML report
 ```
+
+## Test Organization
+
+Tests are organized by user story, not by page:
+
+| describe block | Story | Tests |
+| --- | --- | --- |
+| Story #1 – Basic Search flow | #1 | MA-001 to MA-004 |
+| Story #4 – Invalid Return Dates | #4 | MA-005 to MA-007 |
+| Story #2 – Promotional Codes | #2 | MA-008 to MA-010 |
+| Story #3 – Link to Home Page | #3 | MA-011 to MA-013 |
 
 ## Notes
 
-- The test suite targets the live site at `https://marsair.recruiting.thoughtworks.net/BuiKienTin`.
-- Some tests may be marked as expected failures when they represent known defects against the user stories.
-- The docs in `TW/docs` are written to be easy to walk through during a pairing interview.
+- Target site: `https://marsair.recruiting.thoughtworks.net/BuiKienTin`
+- Only MA-013 is marked `test.fail()` – it documents a confirmed bug (CTA is not a link).
+- All other tests, including promo codes, run without pre-annotations so failures reveal real application behavior.
+- The docs in `TW/docs` are designed to walk through during a pairing interview.
