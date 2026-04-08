@@ -1,0 +1,14 @@
+{
+  "name": "marsair-tw-assignment",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright tests for the MarsAir ThoughtWorks QA assignment",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.2"
+  }
+}
