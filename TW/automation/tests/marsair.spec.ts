@@ -1,5 +1,5 @@
-const { test, expect } = require('../fixtures/marsair.fixture');
-const {
+import { test, expect } from '../fixtures/marsair.fixture';
+import {
   ALL_MONTH_OPTIONS,
   EDGE_CASE_PROMO_CODES,
   INVALID_PROMO_CODES,
@@ -8,7 +8,7 @@ const {
   SAME_DATE_SCHEDULES,
   VALID_PROMO_CODES,
   VALID_SEARCH_PAIRS,
-} = require('../data/testData');
+} from '../data/testData';
 
 /**
  * Valid search context reused for promo-code and navigation tests.

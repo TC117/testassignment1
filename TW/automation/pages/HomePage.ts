@@ -1,7 +1,22 @@
-const { expect } = require('@playwright/test');
+import { expect, type Locator, type Page } from '@playwright/test';
 
-class HomePage {
-  constructor(page) {
+interface SearchOptions {
+  departing?: string;
+  returning?: string;
+  promotionalCode?: string;
+}
+
+export class HomePage {
+  readonly page: Page;
+  readonly heading: Locator;
+  readonly departingSelect: Locator;
+  readonly returningSelect: Locator;
+  readonly promotionalCodeInput: Locator;
+  readonly searchButton: Locator;
+  readonly reportIssueLink: Locator;
+  readonly problemDefinitionLink: Locator;
+
+  constructor(page: Page) {
     this.page = page;
     this.heading = page.getByRole('heading', { name: 'Welcome to MarsAir!' });
     this.departingSelect = page.locator('#departing');
@@ -12,8 +27,8 @@ class HomePage {
     this.problemDefinitionLink = page.getByRole('link', { name: 'Problem definition' });
   }
 
-  async goto() {
-    let lastError;
+  async goto(): Promise<void> {
+    let lastError: Error | null = null;
 
     for (let attempt = 1; attempt <= 3; attempt += 1) {
       try {
@@ -21,7 +36,7 @@ class HomePage {
         lastError = null;
         break;
       } catch (error) {
-        lastError = error;
+        lastError = error as Error;
 
         if (!String(error).includes('ERR_CONNECTION_CLOSED') || attempt === 3) {
           throw error;
@@ -38,11 +53,11 @@ class HomePage {
     await this.expectLoaded();
   }
 
-  async expectLoaded() {
+  async expectLoaded(): Promise<void> {
     await expect(this.heading).toBeVisible();
   }
 
-  async expectCoreFormVisible() {
+  async expectCoreFormVisible(): Promise<void> {
     await expect(this.departingSelect).toBeVisible();
     await expect(this.returningSelect).toBeVisible();
     await expect(this.promotionalCodeInput).toBeVisible();
@@ -51,15 +66,15 @@ class HomePage {
     await expect(this.problemDefinitionLink).toBeVisible();
   }
 
-  async getDepartingOptions() {
+  async getDepartingOptions(): Promise<string[]> {
     return this.page.locator('#departing option').allTextContents();
   }
 
-  async getReturningOptions() {
+  async getReturningOptions(): Promise<string[]> {
     return this.page.locator('#returning option').allTextContents();
   }
 
-  async search({ departing, returning, promotionalCode } = {}) {
+  async search({ departing, returning, promotionalCode }: SearchOptions = {}): Promise<void> {
     if (departing !== undefined) {
       await this.departingSelect.selectOption(departing);
     }
@@ -75,5 +90,3 @@ class HomePage {
     await this.searchButton.click();
   }
 }
-
-module.exports = { HomePage };

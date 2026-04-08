@@ -3,7 +3,7 @@
 ## Working Assumptions
 
 - The assignment is a UI-focused QA exercise against a hosted site – no backend access.
-- Playwright with JavaScript is the automation tool.
+- Playwright with **TypeScript** is the automation tool.
 - The dropdowns use integer option values (`0`–`5`) mapping to July/December across three years.
 - The exact seat-inventory algorithm is unknown; tests only verify that a recognised message appears.
 
@@ -35,9 +35,36 @@
 
 | Decision | Rationale |
 | --- | --- |
+| **TypeScript over JavaScript** | See detailed rationale below |
 | Page Object Model | Keeps locators in one place; easy to update if HTML changes |
 | Custom Playwright fixtures | Injects `homePage` and `resultsPage` so tests stay clean |
 | Data-driven tests via `for…of` | Each data point becomes its own test – clear pass/fail per case |
 | No `test.fail()` on promo tests | Let failures reveal real bugs instead of pre-annotating |
 | `test.fail()` only on BUG-001 | CTA is confirmed not a link from HTML inspection |
 | `generateValidPromoCode()` helper | Demonstrates understanding of the check-digit algorithm |
+
+## Why TypeScript Instead of JavaScript?
+
+### 1. Compile-Time Type Safety
+TypeScript catches type-related bugs **at compile time** rather than at runtime. In a test automation context, this means mismatched Page Object method signatures, wrong parameter types, or missing properties are flagged immediately in the IDE — before the test suite even runs. This significantly reduces debugging time when maintaining or extending the test suite.
+
+### 2. Better IDE Support & Developer Experience
+With explicit type annotations, IDEs (VS Code, WebStorm) provide:
+- **Accurate autocomplete** for Page Object methods and properties (e.g., `homePage.` instantly shows all available actions)
+- **Inline documentation** via JSDoc + types on hover
+- **Safe refactoring** — renaming a method or property updates all references automatically without risk of silent breakage
+
+### 3. Self-Documenting Code
+Interfaces like `SearchOptions`, `PromoCode`, and `MarsAirFixtures` serve as **living documentation** of the data shapes used in the test suite. A new team member can read the type definitions to understand the expected structure without digging through test logic.
+
+### 4. Scalability for Larger Test Suites
+As the test suite grows (more pages, more API tests, shared utilities), TypeScript's module system with `import/export` and strict type checking prevents the common JavaScript pitfalls:
+- Importing a non-existent export → compile error (JS would silently return `undefined`)
+- Passing wrong argument types → compile error (JS would fail only at runtime, possibly with a cryptic Playwright error)
+- Inconsistent data structures across files → caught at build time
+
+### 5. Playwright's First-Class TypeScript Support
+Playwright is built with TypeScript and provides complete type definitions out of the box. Using TypeScript unlocks the **full power** of Playwright's type system — typed fixtures (`test.extend<MarsAirFixtures>`), typed config (`defineConfig`), and typed assertions — with zero additional configuration overhead.
+
+### 6. Industry Standard for QA Automation
+TypeScript has become the de facto standard for modern test automation frameworks. Most QA teams in the industry now prefer TypeScript for its balance of **JavaScript's flexibility** and **strong typing's reliability**, making the codebase more maintainable and team-friendly.

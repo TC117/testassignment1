@@ -2,7 +2,7 @@
 
 ## Automated Test Coverage
 
-All IDs below match the test-name prefixes in `marsair.spec.js`.
+All IDs below match the test-name prefixes in `marsair.spec.ts`.
 
 ### Story #1 – Basic Search flow
 

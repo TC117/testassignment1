@@ -40,12 +40,14 @@ I followed a **risk-based, story-driven** approach:
 | Negative testing | Stories #2, #4 (invalid codes, reverse schedules, same-date searches) |
 | Exploratory | Default-value search, CTA element type, promo whitespace handling |
 
-## Why Playwright
+## Why Playwright + TypeScript
 
 - Fast setup against a live hosted site – no local server required
 - Clear locators (`getByRole`, `getByText`) for form-based UI
 - Built-in evidence: HTML reports, screenshots, video, and traces on failure
 - Easy to extend and demo live during a pairing session
+- **TypeScript** adds compile-time type safety, better IDE autocomplete, and self-documenting interfaces (`SearchOptions`, `PromoCode`, `MarsAirFixtures`) — catching errors before tests even run
+- Playwright provides first-class TypeScript support with typed fixtures and config out of the box
 
 ## Coverage Summary
 

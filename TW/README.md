@@ -4,10 +4,10 @@ This folder contains a self-contained QA submission pack for the MarsAir Thought
 
 ## Contents
 
-- `automation/` – Playwright UI tests against the live MarsAir site
-  - `pages/` – Page objects (HomePage, SearchResultsPage)
-  - `fixtures/` – Custom Playwright fixtures providing page objects to tests
-  - `data/` – Shared test data and helpers (promo-code generator)
+- `automation/` – Playwright UI tests (TypeScript) against the live MarsAir site
+  - `pages/` – Page objects with full type annotations (HomePage, SearchResultsPage)
+  - `fixtures/` – Typed Playwright fixtures providing page objects to tests
+  - `data/` – Shared test data with TypeScript interfaces and helpers (promo-code generator)
   - `tests/` – Test specs organized by user story
 - `docs/test-approach.md` – Testing strategy, techniques, and coverage summary
 - `docs/test-cases.md` – Story-mapped automated and manual scenarios

@@ -1,7 +1,17 @@
-const { expect } = require('@playwright/test');
+import { expect, type Locator, type Page } from '@playwright/test';
 
-class SearchResultsPage {
-  constructor(page) {
+export class SearchResultsPage {
+  readonly page: Page;
+  readonly body: Locator;
+  readonly resultsHeading: Locator;
+  readonly logoLink: Locator;
+  readonly backLink: Locator;
+  readonly prominentCtaLink: Locator;
+  readonly prominentCtaText: Locator;
+  readonly availabilityMessages: string[];
+  readonly invalidScheduleMessage: string;
+
+  constructor(page: Page) {
     this.page = page;
     this.body = page.locator('body');
     this.resultsHeading = page.getByRole('heading', { name: 'Search Results' });
@@ -16,16 +26,16 @@ class SearchResultsPage {
     this.invalidScheduleMessage = 'Unfortunately, this schedule is not possible. Please try again.';
   }
 
-  async expectLoaded() {
+  async expectLoaded(): Promise<void> {
     await expect(this.resultsHeading).toBeVisible();
     await expect(this.backLink).toBeVisible();
   }
 
-  async getBodyText() {
+  async getBodyText(): Promise<string> {
     return this.body.innerText();
   }
 
-  async expectAvailabilityMessage() {
+  async expectAvailabilityMessage(): Promise<string | undefined> {
     await this.expectLoaded();
 
     const bodyText = await this.getBodyText();
@@ -36,32 +46,30 @@ class SearchResultsPage {
     return matchedMessage;
   }
 
-  async expectInvalidScheduleMessage() {
+  async expectInvalidScheduleMessage(): Promise<void> {
     await this.expectLoaded();
     await expect(this.body).toContainText(this.invalidScheduleMessage);
   }
 
-  async expectPromoAccepted(code, discount) {
+  async expectPromoAccepted(code: string, discount: number): Promise<void> {
     await this.expectLoaded();
     await expect(this.body).toContainText(`Promotional code ${code} used: ${discount}% discount!`);
   }
 
-  async expectPromoRejected(code) {
+  async expectPromoRejected(code: string): Promise<void> {
     await this.expectLoaded();
     await expect(this.body).toContainText(`Sorry, code ${code} is not valid`);
   }
 
-  async clickLogo() {
+  async clickLogo(): Promise<void> {
     await this.logoLink.click();
   }
 
-  async expectCtaTextVisible() {
+  async expectCtaTextVisible(): Promise<void> {
     await expect(this.prominentCtaText).toBeVisible();
   }
 
-  async clickProminentCta() {
+  async clickProminentCta(): Promise<void> {
     await this.prominentCtaLink.click();
   }
 }
-
-module.exports = { SearchResultsPage };
