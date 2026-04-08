@@ -57,10 +57,14 @@ const REVERSE_SCHEDULES = [
   { departing: '3', returning: '1', label: 'Dec+1yr → Dec (−12mo)' },
 ];
 
-// ── Story #2: Valid promo codes (examples from acceptance criteria) ──
+// ── Story #2: Valid promo codes ──────────────────────────────────────
+// Codes from the acceptance criteria examples plus extras to isolate BUG-006
 const VALID_PROMO_CODES = [
-  { code: 'AF3-FJK-418', discount: 30 },  // 3 + 4 + 1 = 8  ✓
-  { code: 'JJ5-OPQ-320', discount: 50 },  // 5 + 3 + 2 = 10 → 0  ✓
+  { code: 'AF3-FJK-418', discount: 30 },  // 3 + 4 + 1 = 8  ✓  (non-zero check digit)
+  { code: 'JJ5-OPQ-320', discount: 50 },  // 5 + 3 + 2 = 10 → 0  ✓  (check digit 0 — BUG-006)
+  { code: 'AB2-CDE-134', discount: 20 },  // 2 + 1 + 3 = 6  ✓  (non-zero check digit)
+  { code: 'ZZ5-ABC-500', discount: 50 },  // 5 + 5 + 0 = 10 → 0  ✓  (another check digit 0)
+  { code: 'AA9-BBB-111', discount: 90 },  // 9 + 1 + 1 = 11 → 1  ✓  (upper boundary 90%)
 ];
 
 // ── Story #2: Clearly invalid promo codes ───────────────────────────
@@ -78,6 +82,8 @@ const EDGE_CASE_PROMO_CODES = [
   { code: ' AF3-FJK-418 ', label: 'leading/trailing spaces' },
   { code: 'AF3-FJK',      label: 'truncated – missing last segment' },
   { code: 'AF3-FJK-41',   label: 'missing check digit' },
+  { code: 'AA0-BBB-011',  label: '0% discount, valid check digit (0+0+1=1)' },
+  { code: 'AA0-BBB-000',  label: '0% discount + check digit 0 (0+0+0=0)' },
 ];
 
 // ── Helper: generate a valid promo code by the story algorithm ──────

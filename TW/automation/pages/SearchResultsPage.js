@@ -10,7 +10,7 @@ class SearchResultsPage {
     this.prominentCtaLink = page.getByRole('link', { name: 'Book a ticket to the red planet now!' });
     this.prominentCtaText = page.getByText('Book a ticket to the red planet now!');
     this.availabilityMessages = [
-      'Seats available! Call 0800 MARSAIR to book!',
+      'Seats available!',
       'Sorry, there are no more seats available.',
     ];
     this.invalidScheduleMessage = 'Unfortunately, this schedule is not possible. Please try again.';

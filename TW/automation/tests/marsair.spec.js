@@ -12,9 +12,11 @@ const {
 
 /**
  * Valid search context reused for promo-code and navigation tests.
- * July → July (next year) = exactly 1-year gap, satisfying Story #4.
+ * July → December (two years from now) = 30-month gap, satisfying Story #4.
+ * This pair is chosen because it returns "Seats available!" – promo messages
+ * only appear when seats are available.
  */
-const PROMO_SEARCH = { departing: '0', returning: '2' };
+const PROMO_SEARCH = { departing: '0', returning: '5' };
 
 // ─── Story #1 – Basic Search flow ──────────────────────────────────
 test.describe('Story #1 – Basic Search flow', () => {
